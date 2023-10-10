@@ -1,8 +1,8 @@
 import "./globals.css";
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import { Anton } from "next/font/google";
 
-const inter = Inter({ subsets: ["latin"] });
+const anton = Anton({ subsets: ["latin"], weight: ["400"] });
 
 export const metadata: Metadata = {
   title: "shadcn-useSWR",
@@ -16,7 +16,12 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={inter.className}>{children}</body>
+      <body className={anton.className}>
+        <h2 className="bg-black text-white text-3xl text-center py-3 mb-4">
+          Gonna Catch Them All
+        </h2>
+        <div className="max-w-[900px] m-auto px-8">{children}</div>
+      </body>
     </html>
   );
 }
