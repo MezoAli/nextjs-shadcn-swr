@@ -18,7 +18,7 @@ export default function RootLayout({
     <html lang="en">
       <body className={anton.className}>
         <h2 className="bg-black text-white text-3xl text-center py-3 mb-4">
-          Gonna Catch Them All
+          All Products
         </h2>
         <div className="max-w-[900px] m-auto px-8">{children}</div>
       </body>
