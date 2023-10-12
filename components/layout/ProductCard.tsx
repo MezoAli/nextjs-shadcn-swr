@@ -17,18 +17,19 @@ interface ProductCardProps {
 
 const ProductCard = ({ product }: ProductCardProps) => {
   return (
-    <Link href={`/products/${product.id}`}>
-      <Card className="flex flex-col justify-between items-center gap-5">
-        <CardHeader>
-          <div className="w-full my-3 h-[200px] rounded-md bg-gray-300 relative">
-            <Image
-              src={product.image}
-              fill
-              alt={product.title}
-              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-            />
-          </div>
-          <CardTitle className="leading-7">{product.title}</CardTitle>
+    <Link className="h-full" href={`/products/${product.id}`}>
+      <Card className="flex flex-col justify-between items-center gap-5 h-full">
+        <CardHeader className="flex w-full flex-col justify-center items-center">
+          <Image
+            src={product.image}
+            width={400}
+            height={400}
+            alt={product.title}
+            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+          />
+          <CardTitle className="leading-7 text-center">
+            {product.title}
+          </CardTitle>
         </CardHeader>
         <CardContent className="flex flex-col w-full gap-3 justify-center items-center my-3">
           <p>Category : {product.category}</p>
@@ -42,10 +43,10 @@ const ProductCard = ({ product }: ProductCardProps) => {
             starSpacing="5px"
           />
         </CardContent>
-        <CardFooter className="flex flex-col w-full gap-3 justify-center items-center my-3">
+        {/* <CardFooter className="flex flex-col w-full gap-3 justify-center items-center my-3">
           <p>Price : {product.price} $</p>
           <p>Left In Stock : {product.rating.count}</p>
-        </CardFooter>
+        </CardFooter> */}
       </Card>
     </Link>
   );
