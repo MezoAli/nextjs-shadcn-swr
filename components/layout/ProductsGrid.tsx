@@ -3,17 +3,18 @@
 import { Product } from "@/types/types";
 import { useEffect, useState } from "react";
 import ProductCard from "./ProductCard";
-import axios from "axios";
-
+import api from "@/lib/axiosInstance";
+import useSWR from "swr";
 const ProductsGrid = () => {
-  const [products, setProducts] = useState<Product[]>([]);
-  useEffect(() => {
-    const getProducts = async () => {
-      const response = await axios.get("https://fakestoreapi.com/products");
-      setProducts(response.data);
-    };
-    getProducts();
-  }, []);
+  const getProducts = async () => {
+    const response = await api.get("/products");
+    return response.data;
+  };
+  const { data: products, isLoading } = useSWR("/products", getProducts);
+  if (isLoading) {
+    return <p className="text-3xl text-center my-4">Loading...</p>;
+  }
+
   return (
     <>
       {products?.length === 0 && (
@@ -23,7 +24,7 @@ const ProductsGrid = () => {
       )}
       {products && products?.length > 0 && (
         <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-2 md:gap-3">
-          {products?.map((product) => {
+          {products?.map((product: Product) => {
             return <ProductCard product={product} key={product.id} />;
           })}
         </div>

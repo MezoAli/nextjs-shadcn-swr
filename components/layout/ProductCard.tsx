@@ -17,11 +17,16 @@ interface ProductCardProps {
 
 const ProductCard = ({ product }: ProductCardProps) => {
   return (
-    <Link href={`/prodcts/${product.id}`}>
+    <Link href={`/products/${product.id}`}>
       <Card className="flex flex-col justify-between items-center gap-5">
         <CardHeader>
           <div className="w-full my-3 h-[200px] rounded-md bg-gray-300 relative">
-            <Image src={product.image} fill alt={product.title} />
+            <Image
+              src={product.image}
+              fill
+              alt={product.title}
+              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+            />
           </div>
           <CardTitle className="leading-7">{product.title}</CardTitle>
         </CardHeader>
