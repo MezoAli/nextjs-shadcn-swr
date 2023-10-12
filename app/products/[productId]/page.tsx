@@ -15,23 +15,16 @@ import { Product } from "@/types/types";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { notFound } from "next/navigation";
+import { useProduct } from "@/hooks/useProduct";
 
 interface ProductPageProps {
   params: {
     productId: string;
   };
 }
-const ProductPage = ({ params }: ProductPageProps) => {
-  const getSingleProduct = async (productId: string) => {
-    const response = await api.get<Product>(`/products/${productId}`);
-    return response.data;
-  };
-  const {
-    data: product,
-    error,
-    isLoading,
-  } = useSWR(params.productId, getSingleProduct);
 
+const ProductPage = ({ params }: ProductPageProps) => {
+  const { product, isLoading } = useProduct(params.productId);
   if (isLoading) {
     return <p className="text-3xl text-center my-4">Loading...</p>;
   }
