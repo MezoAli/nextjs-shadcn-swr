@@ -1,6 +1,5 @@
 "use client";
 
-import useSWR from "swr";
 import api from "@/lib/axiosInstance";
 import Image from "next/image";
 import {
@@ -11,11 +10,12 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import StarRatings from "react-star-ratings";
-import { Product } from "@/types/types";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { notFound } from "next/navigation";
 import { useProduct } from "@/hooks/useProduct";
+import { useToast } from "@/components/ui/use-toast";
+import { useState } from "react";
 
 interface ProductPageProps {
   params: {
@@ -24,7 +24,35 @@ interface ProductPageProps {
 }
 
 const ProductPage = ({ params }: ProductPageProps) => {
-  const { product, isLoading } = useProduct(params.productId);
+  const { toast } = useToast();
+  const [name, setName] = useState("");
+
+  const { product, isLoading, mutateProduct } = useProduct(params.productId);
+  const updateProductName = async () => {
+    try {
+      await api.put(`/products/${params.productId}`, {
+        title: name,
+      });
+      mutateProduct(
+        {
+          ...product,
+          title: name,
+        },
+        {
+          revalidate: false,
+        }
+      );
+      toast({
+        title: "Success",
+      });
+    } catch (error: any) {
+      toast({
+        title: "an Error Occured",
+        description: error.response.data.message,
+        variant: "destructive",
+      });
+    }
+  };
   if (isLoading) {
     return <p className="text-3xl text-center my-4">Loading...</p>;
   }
@@ -61,9 +89,14 @@ const ProductPage = ({ params }: ProductPageProps) => {
         <p>Left In Stock : {product?.rating?.count}</p>
       </CardFooter>
       <div className="flex w-full max-w-sm items-center space-x-2 my-4">
-        <Input type="text" placeholder="Change Product Name" />
-        <Button disabled={isLoading} type="submit">
-          Submit
+        <Input
+          type="text"
+          placeholder="Change Product Name"
+          value={name}
+          onChange={(e) => setName(e.target.value)}
+        />
+        <Button disabled={isLoading} onClick={() => updateProductName()}>
+          {isLoading ? "Loading..." : "Submit"}
         </Button>
       </div>
     </Card>

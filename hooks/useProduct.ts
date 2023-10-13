@@ -9,7 +9,7 @@ const getSingleProduct = async (productId: string) => {
 };
 
 export function useProduct(productId: string) {
-  const { data, isLoading } = useSWR(productId, async () => {
+  const { data, isLoading, mutate } = useSWR(productId, async () => {
     try {
       return await getSingleProduct(productId);
     } catch (error) {
@@ -22,7 +22,8 @@ export function useProduct(productId: string) {
   });
 
   return {
-    product: data,
+    product: data as Product,
     isLoading,
+    mutateProduct: mutate,
   };
 }
